@@ -56,49 +56,16 @@
     <h1>Tripward — a local circuit breaker for Claude Code.</h1>
     <p class="sub">Stops runaway agent sessions before they burn tokens or break things.</p>
 
-    <form id="waitlist" action="https://formsubmit.co/ajax/waitlist@tripward.dev" method="POST">
-      <input type="hidden" name="_subject" value="Tripward waitlist" />
-      <input type="hidden" name="_captcha" value="false" />
-      <input type="hidden" name="_template" value="table" />
-      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
-      <input type="email" name="email" required placeholder="you@email.com" autocomplete="email" />
-      <button type="submit" id="waitlist-btn">Join the waitlist</button>
-    </form>
-    <p id="thanks" class="note">You’re on the list. We’ll email when Founding Pro spots open.</p>
-    <p id="waitlist-error" class="note">Couldn’t submit — try again or email waitlist@tripward.dev.</p>
+    <a class="btn" id="waitlist" href="https://tripward.beehiiv.com" style="background:#fff;color:var(--ink);border:1px solid var(--line);margin-bottom:8px">Join the waitlist</a>
+    <p class="micro" style="margin:0 0 18px">Opens Tripward on Beehiiv — we’ll email at public launch. Or email waitlist@tripward.dev.</p>
 
     <p class="price">Founding Pro $15/mo</p>
     <p class="blurb">Paid beta. If a promised capability is missing or fails, we refund. Local-first; receipts never invent USD.</p>
     <a class="btn" id="founding" href="#founding" aria-disabled="true">Checkout not configured</a>
-    <p class="secondary"><a href="#waitlist">Or join the waitlist</a></p>
-    <p class="micro">Local-first. We collect waitlist email if you submit the form; Stripe sees only what you type on their Payment Link. Private receipts stay on your machine. No fake $.</p>
+    <p class="secondary"><a href="https://tripward.beehiiv.com">Or join the waitlist</a></p>
+    <p class="micro">Local-first. Waitlist is via Beehiiv (tripward.beehiiv.com); Stripe sees only what you type on their Payment Link. Private receipts stay on your machine. No fake $.</p>
   </main>
   <script>
-    const form = document.getElementById('waitlist');
-    const thanks = document.getElementById('thanks');
-    const err = document.getElementById('waitlist-error');
-    const btn = document.getElementById('waitlist-btn');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      thanks.classList.remove('show');
-      err.classList.remove('show');
-      btn.disabled = true;
-      try {
-        const res = await fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: { Accept: 'application/json' }
-        });
-        if (!res.ok) throw new Error('submit failed');
-        form.reset();
-        thanks.textContent = "You're on the list. We'll email when Founding Pro spots open.";
-        thanks.classList.add('show');
-      } catch (_) {
-        err.classList.add('show');
-      } finally {
-        btn.disabled = false;
-      }
-    });
 
     // Same name as the Node env var / checkout.config.json key Gage pastes.
     const TRIPWARD_FOUNDING_PRO_PAYMENT_LINK = "https://buy.stripe.com/aFabJ16oYcRoaqN03y1Fe07";
