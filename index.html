@@ -68,18 +68,16 @@
     <p id="waitlist-error" class="note">Couldn’t submit — try again or email waitlist@tripward.dev.</p>
 
     <p class="price">Founding Pro $15/mo</p>
-    <p class="blurb">Beta terms. Auto refund if a promised capability is missing.</p>
-    <a class="btn" id="founding" href="#founding" aria-disabled="true">Get Founding Pro</a>
+    <p class="blurb">Paid beta. If a promised capability is missing or fails, we refund. Local-first; receipts never invent USD.</p>
+    <a class="btn" id="founding" href="#founding" aria-disabled="true">Checkout not configured</a>
     <p class="secondary"><a href="#waitlist">Or join the waitlist</a></p>
-
-    <p class="micro">Local. Claude Code first. No spam. Stripe checkout coming.</p>
+    <p class="micro">Local-first. We collect waitlist email if you submit the form; Stripe sees only what you type on their Payment Link. Private receipts stay on your machine. No fake $.</p>
   </main>
   <script>
     const form = document.getElementById('waitlist');
     const thanks = document.getElementById('thanks');
     const err = document.getElementById('waitlist-error');
     const btn = document.getElementById('waitlist-btn');
-    const founding = document.getElementById('founding');
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       thanks.classList.remove('show');
@@ -93,6 +91,7 @@
         });
         if (!res.ok) throw new Error('submit failed');
         form.reset();
+        thanks.textContent = "You're on the list. We'll email when Founding Pro spots open.";
         thanks.classList.add('show');
       } catch (_) {
         err.classList.add('show');
@@ -100,14 +99,49 @@
         btn.disabled = false;
       }
     });
-    founding.addEventListener('click', (e) => {
-      if (founding.getAttribute('href') === '#founding') {
-        e.preventDefault();
-        form.querySelector('input[type=email]').focus();
-        thanks.textContent = 'Founding Pro checkout coming — join the waitlist for first access.';
-        thanks.classList.add('show');
+
+    // Same name as the Node env var / checkout.config.json key Gage pastes.
+    const TRIPWARD_FOUNDING_PRO_PAYMENT_LINK = "";
+
+    function tripwardParsePaymentLink(raw) {
+      const value = (raw || "").trim();
+      if (!value || value === "#founding") return null;
+      if (/\b(sk_live_|sk_test_|rk_live_|rk_test_|whsec_|pk_live_|pk_test_)/i.test(value)) return null;
+      let url;
+      try { url = new URL(value); } catch { return null; }
+      if (url.protocol !== "https:" || url.hostname !== "buy.stripe.com") return null;
+      if (url.username || url.password || url.hash) return null;
+      const path = url.pathname.replace(/\/+$/, "");
+      if (!/^\/(?:test_)?[A-Za-z0-9_-]{8,}$/.test(path)) return null;
+      return url.origin + path + url.search;
+    }
+
+    function tripwardWireFoundingProCta() {
+      const founding = document.getElementById("founding");
+      if (!founding) return;
+      const href = tripwardParsePaymentLink(TRIPWARD_FOUNDING_PRO_PAYMENT_LINK);
+      if (href) {
+        founding.setAttribute("href", href);
+        founding.removeAttribute("aria-disabled");
+        founding.textContent = "Get Founding Pro";
+        return;
       }
-    });
+      founding.setAttribute("href", "#founding");
+      founding.setAttribute("aria-disabled", "true");
+      founding.textContent = "Checkout not configured";
+      founding.addEventListener("click", function (e) {
+        if (founding.getAttribute("href") === "#founding") {
+          e.preventDefault();
+          const thanksEl = document.getElementById("thanks");
+          if (thanksEl) {
+            thanksEl.textContent = "Checkout not configured — Founding Pro opens when the Payment Link is pasted.";
+            thanksEl.classList.add("show");
+          }
+        }
+      });
+    }
+
+    tripwardWireFoundingProCta();
   </script>
 </body>
 </html>
