@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tripward — a local circuit breaker for Claude Code</title>
+  <meta name="description" content="Tripward stops runaway Claude Code sessions before they burn tokens or break things. Founding Pro $15/mo." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a0a0a'/%3E%3Cpath d='M8 16h16M16 8v16' stroke='%23f5f5f4' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <style>
+    :root { color-scheme: light; --ink:#0a0a0a; --muted:#525252; --line:#e7e5e4; --bg:#fafaf9; --card:#fff; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg); color: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      padding: 32px 20px;
+    }
+    main {
+      width: 100%; max-width: 420px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 40px 28px 32px;
+      text-align: center;
+      box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+    .brand { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 28px; font-weight: 600; }
+    h1 { font-size: 28px; line-height: 1.2; letter-spacing: -0.03em; margin: 0 0 12px; font-weight: 650; }
+    .sub { margin: 0 0 28px; color: var(--muted); font-size: 16px; line-height: 1.45; }
+    form { display: grid; gap: 10px; }
+    input[type=email] {
+      width: 100%; padding: 14px 14px; border-radius: 10px;
+      border: 1px solid var(--line); font-size: 16px; background: #fff;
+    }
+    input[type=email]:focus { outline: 2px solid #0a0a0a; outline-offset: 1px; }
+    button, .btn {
+      display: inline-block; width: 100%; padding: 14px 16px; border-radius: 10px;
+      border: none; background: var(--ink); color: #fff; font-size: 16px; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+    }
+    button:hover, .btn:hover { opacity: .92; }
+    .price { margin: 18px 0 6px; font-size: 14px; color: var(--ink); font-weight: 600; }
+    .blurb { margin: 0 0 14px; font-size: 13px; color: var(--muted); line-height: 1.4; }
+    .secondary { margin: 8px 0 0; font-size: 13px; }
+    .secondary a { color: var(--muted); }
+    .micro { margin: 22px 0 0; font-size: 12px; color: #a8a29e; line-height: 1.4; }
+    .note { display:none; margin-top: 12px; font-size: 14px; color: var(--muted); }
+    .note.show { display: block; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="brand">Tripward</p>
+    <h1>Tripward — a local circuit breaker for Claude Code.</h1>
+    <p class="sub">Stops runaway agent sessions before they burn tokens or break things.</p>
+
+    <form id="waitlist" action="#" method="post">
+      <input type="email" name="email" required placeholder="you@email.com" autocomplete="email" />
+      <button type="submit">Join the waitlist</button>
+    </form>
+    <p id="thanks" class="note">You’re on the list. We’ll email when Founding Pro spots open.</p>
+
+    <p class="price">Founding Pro $15/mo</p>
+    <p class="blurb">Beta terms. Auto refund if a promised capability is missing.</p>
+    <!-- Replace STRIPE_LINK when live -->
+    <a class="btn" id="founding" href="#founding" aria-disabled="true">Get Founding Pro</a>
+    <p class="secondary"><a href="#waitlist">Or join the waitlist</a></p>
+
+    <p class="micro">Local. Claude Code first. No spam on the waitlist.</p>
+  </main>
+  <script>
+    // Soft lander: capture emails locally until Beehiiv/Form backend is wired.
+    // Replace with Beehiiv embed or Formspree action when ready.
+    const form = document.getElementById('waitlist');
+    const thanks = document.getElementById('thanks');
+    const founding = document.getElementById('founding');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = new FormData(form).get('email');
+      try {
+        const key = 'tripward_waitlist';
+        const prev = JSON.parse(localStorage.getItem(key) || '[]');
+        if (email && !prev.includes(email)) prev.push(String(email));
+        localStorage.setItem(key, JSON.stringify(prev));
+      } catch (_) {}
+      form.reset();
+      thanks.classList.add('show');
+    });
+    founding.addEventListener('click', (e) => {
+      // Stripe link not set yet
+      if (founding.getAttribute('href') === '#founding') {
+        e.preventDefault();
+        form.querySelector('input[type=email]').focus();
+        thanks.textContent = 'Founding Pro checkout coming — join the waitlist for first access.';
+        thanks.classList.add('show');
+      }
+    });
+  </script>
+</body>
+</html>
