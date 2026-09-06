@@ -7,7 +7,7 @@ GitHub Pages · custom domain `tripward.dev` · CNAME file committed.
 - [x] Repo + Pages site built
 - [x] `CNAME` → `tripward.dev`
 - [x] Approved Days 8–14 copy live in `index.html`
-- [x] Waitlist → mailto `waitlist@tripward.dev` (Beehiiv later)
+- [x] Waitlist → FormSubmit → `waitlist@tripward.dev` (confirm first email from FormSubmit; Beehiiv later optional)
 - [ ] Namecheap DNS (Gage)
 - [ ] Pages → Enforce HTTPS (after DNS verifies)
 - [ ] Stripe Payment Link for Founding Pro
