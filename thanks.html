@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>You're in — Tripward Founding Pro</title>
+  <meta name="description" content="Founding Pro setup: local Claude Code protection with FuseCap." />
+  <link rel="icon" href="/logo.png?v=2" type="image/png" />
+  <link rel="apple-touch-icon" href="/logo.png?v=2" />
+  <style>
+    :root { color-scheme: light; --ink:#0a0a0a; --muted:#525252; --line:#e7e5e4; --bg:#fafaf9; --card:#fff; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg); color: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      padding: 32px 20px;
+    }
+    main {
+      width: 100%; max-width: 520px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 40px 28px 32px;
+      text-align: center;
+      box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+    .logo-wrap { display:flex; justify-content:center; margin: 0 0 20px; }
+    .logo-mark { width: 56px; height: 56px; border-radius: 14px; display:block; }
+    .brand { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 28px; font-weight: 600; }
+    h1 { font-size: 28px; line-height: 1.2; letter-spacing: -0.03em; margin: 0 0 12px; font-weight: 650; }
+    .sub { margin: 0 0 8px; color: var(--muted); font-size: 16px; line-height: 1.45; }
+    .blurb { margin: 0 0 28px; font-size: 14px; color: var(--muted); line-height: 1.45; }
+    .steps { text-align: left; }
+    .step { margin: 0 0 22px; }
+    .step:last-child { margin-bottom: 0; }
+    .step-label { margin: 0 0 10px; font-size: 14px; font-weight: 600; color: var(--ink); }
+    .step-note { margin: 0 0 10px; font-size: 13px; color: var(--muted); line-height: 1.4; }
+    pre {
+      margin: 0 0 8px;
+      padding: 12px 14px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      line-height: 1.45;
+      text-align: left;
+      overflow-x: auto;
+      white-space: pre;
+      color: var(--ink);
+      -webkit-user-select: all;
+      user-select: all;
+    }
+    pre:last-child { margin-bottom: 0; }
+    .links { margin: 22px 0 0; font-size: 13px; color: var(--muted); line-height: 1.5; text-align: center; }
+    .links a { color: var(--muted); }
+    .micro { margin: 22px 0 0; font-size: 12px; color: #a8a29e; line-height: 1.4; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="logo-wrap"><img class="logo-mark" src="/logo.png?v=2" width="56" height="56" alt="Tripward" /></div>
+    <p class="brand">Tripward</p>
+    <h1>You're in</h1>
+    <p class="sub">Founding Pro setup</p>
+    <p class="blurb">This is local Claude Code protection setup — clone FuseCap, then run the commands in your project repo.</p>
+
+    <div class="steps">
+      <div class="step">
+        <p class="step-label">Step 1 — Clone FuseCap</p>
+        <pre>git clone https://github.com/gage-cmd/fusecap.git &amp;&amp; cd fusecap &amp;&amp; npm install</pre>
+      </div>
+
+      <div class="step">
+        <p class="step-label">Step 2 — In your project repo (replace /path/to/fusecap)</p>
+        <pre>npx tsx /path/to/fusecap/src/cli.ts init --preview</pre>
+        <pre>npx tsx /path/to/fusecap/src/cli.ts init</pre>
+        <pre>npx tsx /path/to/fusecap/src/cli.ts doctor</pre>
+        <pre>npx tsx /path/to/fusecap/src/cli.ts run</pre>
+        <pre>npx tsx /path/to/fusecap/src/cli.ts protect --mode enforce</pre>
+        <pre>npx tsx /path/to/fusecap/src/cli.ts receipt --html</pre>
+        <pre>npx tsx /path/to/fusecap/src/cli.ts restore --preview --html</pre>
+      </div>
+    </div>
+
+    <p class="links">
+      <a href="https://github.com/gage-cmd/fusecap">GitHub repo</a>
+      ·
+      <a href="https://github.com/gage-cmd/fusecap/blob/main/SUPPORT.md">SUPPORT.md</a>
+      ·
+      <a href="https://tripward.dev">tripward.dev</a>
+    </p>
+    <p class="micro">If a promised capability fails, we refund. Local-first. Claude Code only. No fake $.</p>
+  </main>
+</body>
+</html>
