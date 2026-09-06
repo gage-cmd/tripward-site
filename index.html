@@ -40,6 +40,7 @@
       cursor: pointer; text-decoration: none;
     }
     button:hover, .btn:hover { opacity: .92; }
+    .btn[aria-disabled="true"] { opacity: .55; cursor: pointer; }
     .price { margin: 18px 0 6px; font-size: 14px; color: var(--ink); font-weight: 600; }
     .blurb { margin: 0 0 14px; font-size: 13px; color: var(--muted); line-height: 1.4; }
     .secondary { margin: 8px 0 0; font-size: 13px; }
@@ -55,40 +56,33 @@
     <h1>Tripward — a local circuit breaker for Claude Code.</h1>
     <p class="sub">Stops runaway agent sessions before they burn tokens or break things.</p>
 
-    <form id="waitlist" action="#" method="post">
+    <form id="waitlist">
       <input type="email" name="email" required placeholder="you@email.com" autocomplete="email" />
       <button type="submit">Join the waitlist</button>
     </form>
-    <p id="thanks" class="note">You’re on the list. We’ll email when Founding Pro spots open.</p>
+    <p id="thanks" class="note">Opening your email app — send to join the waitlist.</p>
 
     <p class="price">Founding Pro $15/mo</p>
     <p class="blurb">Beta terms. Auto refund if a promised capability is missing.</p>
-    <!-- Replace STRIPE_LINK when live -->
     <a class="btn" id="founding" href="#founding" aria-disabled="true">Get Founding Pro</a>
     <p class="secondary"><a href="#waitlist">Or join the waitlist</a></p>
 
-    <p class="micro">Local. Claude Code first. No spam on the waitlist.</p>
+    <p class="micro">Local. Claude Code first. No spam on the waitlist. Stripe checkout coming.</p>
   </main>
   <script>
-    // Soft lander: capture emails locally until Beehiiv/Form backend is wired.
-    // Replace with Beehiiv embed or Formspree action when ready.
     const form = document.getElementById('waitlist');
     const thanks = document.getElementById('thanks');
     const founding = document.getElementById('founding');
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const email = new FormData(form).get('email');
-      try {
-        const key = 'tripward_waitlist';
-        const prev = JSON.parse(localStorage.getItem(key) || '[]');
-        if (email && !prev.includes(email)) prev.push(String(email));
-        localStorage.setItem(key, JSON.stringify(prev));
-      } catch (_) {}
-      form.reset();
+      const email = String(new FormData(form).get('email') || '').trim();
+      if (!email) return;
+      const subject = encodeURIComponent('Tripward waitlist');
+      const body = encodeURIComponent('Add me to the Tripward waitlist.\n\nEmail: ' + email + '\n');
+      window.location.href = 'mailto:waitlist@tripward.dev?subject=' + subject + '&body=' + body;
       thanks.classList.add('show');
     });
     founding.addEventListener('click', (e) => {
-      // Stripe link not set yet
       if (founding.getAttribute('href') === '#founding') {
         e.preventDefault();
         form.querySelector('input[type=email]').focus();
